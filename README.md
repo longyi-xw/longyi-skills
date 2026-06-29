@@ -18,7 +18,7 @@ git init
 git add .
 git commit -m "init: longyi 个人技能市场"
 git branch -M main
-git remote add origin git@github.com:<你的GitHub用户名>/longyi-skills.git
+git remote add origin git@github.com:longyi-xw/longyi-skills.git
 git push -u origin main
 ```
 
@@ -30,7 +30,7 @@ git push -u origin main
 
 ```bash
 # 1. 添加你的市场（只需每台机器做一次）
-/plugin marketplace add <你的GitHub用户名>/longyi-skills
+/plugin marketplace add longyi-xw/longyi-skills
 
 # 2. 安装技能
 /plugin install project-onboarding@longyi-skills
