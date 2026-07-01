@@ -10,6 +10,12 @@
       "source": "./plugins/project-onboarding",
       "description": "快速理解并总结陌生代码仓库：缕清结构、技术栈、业务、目录职责与功能分块，并给出新功能落点指南。适合新入职或接手新项目时使用。",
       "category": "development"
+    },
+    {
+      "name": "requirement-analysis",
+      "source": "./plugins/requirement-analysis",
+      "description": "以产品经理视角提炼需求文档（立项/MRD/PRD/评审纪要），把「产品语言」翻译成「研发语言」，产出流程图、架构图、核心需求说明与实施难点总结。",
+      "category": "development"
     }
   ]
 }

@@ -7,6 +7,7 @@ Longyi 的个人 Claude Code 技能市场（marketplace）。把仓库推到 Git
 | 插件 | 作用 |
 |------|------|
 | `project-onboarding` | 快速理解陌生代码仓库：缕清结构、技术栈、业务、目录职责与功能分块，给出「新功能落点指南」。适合新入职 / 接手新项目时使用。 |
+| `requirement-analysis` | 以产品经理视角读懂需求文档（立项/MRD/PRD/评审纪要），把「产品语言」翻译成「研发语言」，产出流程图、架构图、核心需求说明与实施难点总结。 |
 
 ## 一、首次发布（只需做一次）
 
@@ -34,6 +35,7 @@ git push -u origin main
 
 # 2. 安装技能
 /plugin install project-onboarding@longyi-skills
+/plugin install requirement-analysis@longyi-skills
 ```
 
 安装时会让你选 **scope**：
@@ -41,9 +43,9 @@ git push -u origin main
 - **User scope** → 装到 `~/.claude/skills/`，所有项目可用（推荐通用技能选这个）
 - **Project scope** → 装到当前仓库 `.claude/skills/`，仅当前项目可用
 
-`project-onboarding` 是通用工具，建议选 User scope。
+两者都是通用工具，建议选 User scope。
 
-安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」「这项目新功能加哪」即可触发；也可显式点名让它用该技能。
+安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」即可触发 `project-onboarding`；丢一份需求/PRD 文档并说「帮我分析一下这份需求」即可触发 `requirement-analysis`；也可显式点名让它用某个技能。
 
 ## 三、更新技能
 
@@ -58,6 +60,7 @@ git add . && git commit -m "update: xxx" && git push
 ```bash
 /plugin marketplace update longyi-skills
 /plugin install project-onboarding@longyi-skills
+/plugin install requirement-analysis@longyi-skills
 ```
 
 ## 四、以后添加新技能
@@ -79,12 +82,19 @@ longyi-skills/
 ├── .claude-plugin/
 │   └── marketplace.json          # 市场清单：列出所有插件
 ├── plugins/
-│   └── project-onboarding/
+│   ├── project-onboarding/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json        # 插件清单
+│   │   ├── SKILL.md               # 技能主体
+│   │   └── references/            # 技能引用资源
+│   │       ├── project-types.md
+│   │       └── output-template.md
+│   └── requirement-analysis/
 │       ├── .claude-plugin/
 │       │   └── plugin.json        # 插件清单
 │       ├── SKILL.md               # 技能主体
 │       └── references/            # 技能引用资源
-│           ├── project-types.md
+│           ├── extraction-and-translation.md
 │           └── output-template.md
 └── README.md
 ```
