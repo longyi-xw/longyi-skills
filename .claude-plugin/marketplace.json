@@ -16,6 +16,12 @@
       "source": "./plugins/requirement-analysis",
       "description": "以产品经理视角提炼需求文档（立项/MRD/PRD/评审纪要），把「产品语言」翻译成「研发语言」，产出流程图、架构图、核心需求说明与实施难点总结。",
       "category": "development"
+    },
+    {
+      "name": "study-notes",
+      "source": "./plugins/study-notes",
+      "description": "阅读与学习笔记助手：对读书笔记 / 学习笔记初稿做检索核对、分析纠错与答疑引导，按小节 / 章节 / 全书三种粒度生成 Notion 友好的 Markdown 总结。",
+      "category": "learning"
     }
   ]
 }
