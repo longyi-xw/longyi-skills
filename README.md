@@ -9,6 +9,7 @@ Longyi 的个人 Claude Code 技能市场（marketplace）。把仓库推到 Git
 | `project-onboarding` | 快速理解陌生代码仓库：缕清结构、技术栈、业务、目录职责与功能分块，给出「新功能落点指南」。适合新入职 / 接手新项目时使用。 |
 | `requirement-analysis` | 以产品经理视角读懂需求文档（立项/MRD/PRD/评审纪要），把「产品语言」翻译成「研发语言」，产出流程图、架构图、核心需求说明与实施难点总结。 |
 | `study-notes` | 阅读 / 学习笔记助手：对笔记初稿做检索核对、分析纠错与答疑引导，按小节 / 章节 / 全书三种粒度生成可直接粘贴到 Notion 的 Markdown 总结。 |
+| `dev-env-conventions` | 跨平台（Windows / macOS / Linux）本机开发环境约定：软件与代码装在哪、用哪个系统包管理器、Node/Python 多版本怎么管、缓存与环境变量往哪儿重定向、「命令找不到」怎么排查。先判平台再取路径。 |
 
 ## 一、首次发布（只需做一次）
 
@@ -38,6 +39,7 @@ git push -u origin main
 /plugin install project-onboarding@longyi-skills
 /plugin install requirement-analysis@longyi-skills
 /plugin install study-notes@longyi-skills
+/plugin install dev-env-conventions@longyi-skills
 ```
 
 安装时会让你选 **scope**：
@@ -47,7 +49,7 @@ git push -u origin main
 
 两者都是通用工具，建议选 User scope。
 
-安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」即可触发 `project-onboarding`；丢一份需求/PRD 文档并说「帮我分析一下这份需求」即可触发 `requirement-analysis`；丢一段读书 / 学习笔记并说「帮我校对 / 总结一下」即可触发 `study-notes`；也可显式点名让它用某个技能。
+安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」即可触发 `project-onboarding`；丢一份需求/PRD 文档并说「帮我分析一下这份需求」即可触发 `requirement-analysis`；丢一段读书 / 学习笔记并说「帮我校对 / 总结一下」即可触发 `study-notes`；说「帮我装个 xxx」「新电脑配一下环境」「这个命令怎么找不到」即可触发 `dev-env-conventions`；也可显式点名让它用某个技能。
 
 ## 三、更新技能
 
@@ -64,6 +66,7 @@ git add . && git commit -m "update: xxx" && git push
 /plugin install project-onboarding@longyi-skills
 /plugin install requirement-analysis@longyi-skills
 /plugin install study-notes@longyi-skills
+/plugin install dev-env-conventions@longyi-skills
 ```
 
 ## 四、以后添加新技能
@@ -99,11 +102,19 @@ longyi-skills/
 │   │   └── references/            # 技能引用资源
 │   │       ├── extraction-and-translation.md
 │   │       └── output-template.md
-│   └── study-notes/
+│   ├── study-notes/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json        # 插件清单
+│   │   ├── SKILL.md               # 技能主体
+│   │   └── references/            # 技能引用资源
+│   │       └── output-templates.md
+│   └── dev-env-conventions/
 │       ├── .claude-plugin/
 │       │   └── plugin.json        # 插件清单
-│       ├── SKILL.md               # 技能主体
-│       └── references/            # 技能引用资源
-│           └── output-templates.md
+│       ├── SKILL.md               # 技能主体：三平台对照表 + 判定与排查流程
+│       └── references/            # 各平台细则，按需加载
+│           ├── windows.md
+│           ├── macos.md
+│           └── linux.md
 └── README.md
 ```

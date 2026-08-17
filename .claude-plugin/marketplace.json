@@ -22,6 +22,12 @@
       "source": "./plugins/study-notes",
       "description": "阅读与学习笔记助手：对读书笔记 / 学习笔记初稿做检索核对、分析纠错与答疑引导，按小节 / 章节 / 全书三种粒度生成 Notion 友好的 Markdown 总结。",
       "category": "learning"
+    },
+    {
+      "name": "dev-env-conventions",
+      "source": "./plugins/dev-env-conventions",
+      "description": "跨平台（Windows / macOS / Linux）本机开发环境约定：软件与代码装在哪、用哪个系统包管理器、Node/Python 多版本怎么管、缓存与环境变量往哪儿重定向、以及「命令找不到」的排查顺序。先判平台再取路径。",
+      "category": "development"
     }
   ]
 }
