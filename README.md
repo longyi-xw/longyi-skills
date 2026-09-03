@@ -10,6 +10,7 @@ Longyi 的个人 Claude Code 技能市场（marketplace）。把仓库推到 Git
 | `requirement-analysis` | 以产品经理视角读懂需求文档（立项/MRD/PRD/评审纪要），把「产品语言」翻译成「研发语言」，产出流程图、架构图、核心需求说明与实施难点总结。 |
 | `study-notes` | 阅读 / 学习笔记助手：对笔记初稿做检索核对、分析纠错与答疑引导，按小节 / 章节 / 全书三种粒度生成可直接粘贴到 Notion 的 Markdown 总结。 |
 | `dev-env-conventions` | 跨平台（Windows / macOS / Linux）本机开发环境约定：软件与代码装在哪、用哪个系统包管理器、Node/Python 多版本怎么管、缓存与环境变量往哪儿重定向、「命令找不到」怎么排查。先判平台再取路径。 |
+| `project-retrospective` | 把做完的项目反向蒸馏成个人知识资产与简历素材：提炼架构决策、技术原理与实现难点，按「事实→机制→决策→可迁移经验」四层阶梯抽象，用代码与 git 证据核验每条主张，产出知识复盘 / 机读 experience.yml / STAR 简历条目 / 面试问答四件套，并可跨项目汇总成技术画像与简历初稿。 |
 
 ## 一、首次发布（只需做一次）
 
@@ -108,13 +109,22 @@ longyi-skills/
 │   │   ├── SKILL.md               # 技能主体
 │   │   └── references/            # 技能引用资源
 │   │       └── output-templates.md
-│   └── dev-env-conventions/
+│   ├── dev-env-conventions/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json        # 插件清单
+│   │   ├── SKILL.md               # 技能主体：三平台对照表 + 判定与排查流程
+│   │   └── references/            # 各平台细则，按需加载
+│   │       ├── windows.md
+│   │       ├── macos.md
+│   │       └── linux.md
+│   └── project-retrospective/
 │       ├── .claude-plugin/
 │       │   └── plugin.json        # 插件清单
-│       ├── SKILL.md               # 技能主体：三平台对照表 + 判定与排查流程
-│       └── references/            # 各平台细则，按需加载
-│           ├── windows.md
-│           ├── macos.md
-│           └── linux.md
+│       ├── SKILL.md               # 技能主体：两种模式 + 六阶段工作流
+│       └── references/            # 方法论与模板，按需加载
+│           ├── config-and-paths.md    # 知识库位置解析与首次配置
+│           ├── mining-playbook.md     # 难点雷达 / 四层阶梯 / 防注水
+│           ├── output-templates.md    # 四件套模板与 experience.yml 规范
+│           └── aggregate-mode.md      # 跨项目汇总与简历初稿
 └── README.md
 ```
