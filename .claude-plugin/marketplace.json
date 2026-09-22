@@ -34,6 +34,12 @@
       "source": "./plugins/project-retrospective",
       "description": "把一个已完成的项目反向蒸馏成个人知识资产与简历素材：提炼架构决策、技术原理、算法与实现难点，按「事实→机制→决策→可迁移经验」四层阶梯抽象，用代码与 git 证据核验每条能力主张，产出知识复盘、机读 experience.yml、STAR 简历条目与面试问答四件套，并支持跨项目汇总成个人技术画像与简历初稿。",
       "category": "development"
+    },
+    {
+      "name": "claude-anti-ban",
+      "source": "./plugins/claude-anti-ban",
+      "description": "Claude Code 账号防封禁与网络隐私加固：禁用后台 Datadog/GrowthBook/OTEL 遥测上报、系统时区对齐节点 IP、检测并修复 DNS/IPv6 泄漏、清洗境内镜像配置痕迹，提供三维立体加固与一键自动化脚本。",
+      "category": "security"
     }
   ]
 }
