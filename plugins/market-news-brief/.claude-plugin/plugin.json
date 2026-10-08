@@ -1,0 +1,18 @@
+{
+  "name": "market-news-brief",
+  "version": "1.0.0",
+  "description": "全球经济新闻总结与市场分析：按指定时间窗口（默认近 7 天，可指定一天、一个月或任意日期）联网检索美国、中国、俄罗斯、欧元区、日本等主要经济体的市场新闻、政策变动、经济发展方向与重大自然灾害，产出客观中立的新闻摘要，以及聚焦市场环境、周期与信号、不含投资建议的市场分析和风险提示，渲染为统一的 HTML 报告。",
+  "author": {
+    "name": "Longyi"
+  },
+  "keywords": [
+    "news",
+    "market-analysis",
+    "macro",
+    "economy",
+    "policy",
+    "finance",
+    "report",
+    "html-template"
+  ]
+}
