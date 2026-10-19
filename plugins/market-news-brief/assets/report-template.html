@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="market-news-brief report-template v1.0">
+<meta name="generator" content="market-news-brief report-template v1.1">
 <title>全球经济新闻总结与市场分析</title>
 <style>
 /* ========== 色彩角色：浅色 ========== */
@@ -293,6 +293,54 @@ td .sources-line { margin-top: 0; }
 .strategy .cond { font-size: 13px; color: var(--ink-3); }
 .strategy .act { font-size: 14px; }
 
+/* ========== 分析：因果链（三层思维） ========== */
+.chain-card { padding: 18px 20px; }
+.chain-card h4 { font-size: 16px; margin: 0 0 8px; }
+.phenomenon { color: var(--ink-2); font-size: 14px; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 12px; }
+.node { font-size: 13px; padding: 3px 10px; border-radius: 8px; border: 1px solid var(--axis); background: var(--surface-2); }
+.node.inferred { background: transparent; border-style: dashed; color: var(--ink-2); }
+.flow .arrow { color: var(--ink-3); font-size: 13px; }
+.layers { display: grid; gap: 8px; margin: 4px 0 10px; }
+.layer { border-left: 3px solid var(--axis); padding: 4px 0 4px 14px; }
+.layer.l2 { border-left-color: var(--accent-weak); margin-left: 14px; }
+.layer.l3 { border-left-color: var(--accent); margin-left: 28px; }
+.layer-tag { font-size: 12px; font-weight: 650; color: var(--ink-2); }
+.layer-tag span { font-weight: 400; color: var(--ink-3); margin-left: 8px; }
+.layer p { margin: 2px 0 0; font-size: 14px; }
+.principle { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; font-size: 14px; margin: 10px 0; }
+.principle .p-name { font-weight: 650; margin-right: 8px; }
+.question { border: 1px dashed var(--accent); border-radius: 10px; padding: 8px 14px; font-size: 14px; margin-top: 10px; }
+.question .q-label { color: var(--accent); font-weight: 650; margin-right: 8px; }
+
+/* ========== 分析：传导确定性 ========== */
+.cert { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.5; padding: 1px 8px; border-radius: 999px; white-space: nowrap; border: 1px solid var(--ink); }
+.cert.must { background: var(--ink); color: var(--surface); }
+.cert.likely { background: var(--accent-weak); border-color: var(--accent-weak); color: var(--ink); }
+.cert.cond { background: transparent; border-style: dashed; border-color: var(--axis); color: var(--ink-2); }
+.cond-line { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+
+/* ========== 分析：防御策略与反向视角 ========== */
+.playbook h4 { font-size: 15px; margin: 6px 0 4px; }
+.pb-sub { font-size: 12px; color: var(--ink-3); font-weight: 600; margin: 10px 0 3px; }
+.playbook ul { font-size: 14px; color: var(--ink-2); }
+.flowmap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: center; }
+.flowmap .side { display: flex; flex-wrap: wrap; gap: 4px; }
+.flowmap .side.to .chip { background: var(--accent-weak); color: var(--ink); border-color: transparent; }
+.flowmap .arrow { color: var(--ink-3); font-size: 18px; }
+.contrarian { border-left: 3px solid var(--dir-mixed); background: var(--surface-2); border-radius: 0 10px 10px 0; padding: 8px 12px; font-size: 14px; margin: 12px 0 4px; }
+.contrarian .c-label { font-weight: 650; color: var(--dir-mixed); margin-right: 6px; }
+
+/* ========== 分析：投资者笔记 ========== */
+.lessons { list-style: none; padding: 0; margin: 0; counter-reset: ls; display: grid; gap: 10px; }
+.lessons li { counter-increment: ls; position: relative; padding: 12px 16px 12px 52px; border: 1px solid var(--border); border-radius: 12px; }
+.lessons li::before {
+  content: counter(ls, decimal-leading-zero); position: absolute; left: 16px; top: 12px;
+  font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums;
+}
+.lessons .l-title { font-weight: 650; }
+.lessons .l-text { font-size: 14px; color: var(--ink-2); margin-top: 2px; }
+
 /* ========== 来源与方法 ========== */
 ol.source-list { font-size: 13px; color: var(--ink-2); padding-left: 2.2em; }
 ol.source-list li { margin-bottom: 4px; }
@@ -308,6 +356,7 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
   .toc { display: none; }
   section.block { padding: 18px 16px; }
   .masthead h1 { font-size: 24px; }
+  .layer.l2, .layer.l3 { margin-left: 0; }
 }
 
 /* ========== 打印 ========== */
@@ -316,12 +365,13 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
   .toc, .toolbar, .controls { display: none !important; }
   .layout { display: block; padding: 0; }
   section.block { border: 0; padding: 0; margin-bottom: 18px; }
-  .card, .tile, tr { break-inside: avoid; }
+  .card, .tile, tr, .lessons li { break-inside: avoid; }
   a { color: inherit; }
 }
 @media (forced-colors: active) {
   .bar { background: CanvasText !important; }
   .dot, .lvl i, .meter span.on { background: CanvasText !important; }
+  .cert.must { background: CanvasText !important; color: Canvas !important; }
 }
 </style>
 </head>
@@ -428,9 +478,37 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
       { "label": "波动水平", "value": "【示例】上升", "note": "依据：波动率指数区间上行" },
       { "label": "美元", "value": "【示例】走强", "note": "依据：美元指数 +0.4%" }
     ],
+    "causalChains": [
+      {
+        "title": "【示例】为什么通胀数据走高，多个主要股指反而下跌？",
+        "phenomenon": "【示例】区间内 CPI、PPI 读数高于市场预期 [[n2]]，同期上证指数、恒生指数与 MOEX 指数下跌。",
+        "chain": [
+          { "node": "【示例】通胀读数高于预期", "status": "observed", "refs": ["n2"] },
+          { "node": "【示例】宽松预期后移", "status": "observed", "refs": ["n1"] },
+          { "node": "【示例】无风险利率上行", "status": "inferred" },
+          { "node": "【示例】估值与利润率同时承压", "status": "inferred" }
+        ],
+        "first": "【示例】物价上涨，企业的名义收入也跟着涨，直觉上对股市不是坏事。",
+        "second": "【示例】市场交易的是“意外”而不是“水平”：读数高于预期，市场推迟对宽松的定价，利率上行使估值的分母变大，越依赖远期现金流的资产受影响越大。PPI 涨得比 CPI 快时，中下游成本涨得比售价快，利润率被挤压，估值和盈利预期一起下修。",
+        "third": "【示例】资金通常从高估值、长久期资产迁往现金流近、定价权强的方向。需要判断的是已定价程度：利率期货已经计入了多少，决定了下一次数据的“意外”空间。反转条件是通胀见顶证据出现，届时对利率最敏感的资产通常最先修复。",
+        "principle": { "name": "贴现率效应 + 成本推动型通胀", "text": "【示例】资产价格约等于未来现金流折现。利率上行时，现金流越远的资产，现值缩水越多。成本推动的通胀不会带来销量扩张，只会挤压利润。" },
+        "counterEvidence": "【示例】服务业景气仍在扩张，企业盈利预期尚未明显下修。",
+        "question": "【示例】如果下个月 PPI 回落、CPI 仍然偏高，这条链上哪一环会先松动？",
+        "refs": ["n1", "n2"]
+      }
+    ],
+    "impacts": [
+      { "trigger": "【示例】央行关键利率调整生效 [[n3]]", "effect": "【示例】浮动利率贷款在重定价日按新利率计息", "mechanism": "【示例】贷款合同按基准利率重定价", "certainty": "必然", "horizon": "即时至下一重定价日" },
+      { "trigger": "【示例】地震导致半导体工厂停产检查 [[d1]]", "effect": "【示例】停产期间产出损失、交付延迟", "mechanism": "【示例】产线停机期间无法出货", "certainty": "必然", "horizon": "数周" },
+      { "trigger": "【示例】同上", "effect": "【示例】相关芯片现货价格上涨", "certainty": "有条件", "condition": "【示例】取决于停产时长与下游库存水平", "horizon": "数周", "refs": ["d1"] },
+      { "trigger": "【示例】油价区间上涨 3.8%", "effect": "【示例】CPI 能源分项上行", "mechanism": "【示例】燃料零售价格随原油成本调整", "certainty": "大概率", "condition": "【示例】若油价在数日内回落，传导幅度有限", "horizon": "1–2 个月" }
+    ],
+    "cycleNotes": [
+      "【示例】一两段周期叙事：主要经济体分别处在什么阶段，本轮与典型周期有何不同，下一阶段的切换信号已经出现了几个、还差哪些。"
+    ],
     "cycles": [
-      { "economy": "美国", "growth": "【示例】放缓", "inflation": "【示例】回落", "monetary": "【示例】宽松周期中段", "fiscal": "【示例】中性", "phase": "【示例】增长放缓 + 通胀回落", "evidence": "【示例】就业数据降温 [[n1]]", "confidence": "中" },
-      { "economy": "中国", "growth": "【示例】企稳", "inflation": "【示例】低位", "monetary": "【示例】适度宽松", "fiscal": "【示例】积极", "phase": "【示例】弱复苏", "evidence": "【示例】PPI 降幅收窄 [[n2]]", "confidence": "低" }
+      { "economy": "美国", "growth": "【示例】放缓", "inflation": "【示例】回落", "monetary": "【示例】宽松周期中段", "fiscal": "【示例】中性", "phase": "【示例】增长放缓 + 通胀回落", "evidence": "【示例】就业数据降温 [[n1]]", "next": "【示例】收益率曲线牛陡、PMI 新订单回升", "confidence": "中" },
+      { "economy": "中国", "growth": "【示例】企稳", "inflation": "【示例】低位", "monetary": "【示例】适度宽松", "fiscal": "【示例】积极", "phase": "【示例】弱复苏", "evidence": "【示例】PPI 降幅收窄 [[n2]]", "next": "【示例】PPI 转正、M1 持续回升", "confidence": "低" }
     ],
     "signals": [
       {
@@ -457,6 +535,26 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
       { "risk": "【示例】政策预期反复", "probability": "中", "impact": "高", "description": "【示例】市场定价与官方指引存在差异。", "refs": ["n1"] },
       { "risk": "【示例】供应链中断", "probability": "低", "impact": "中", "description": "【示例】灾后复产节奏不确定。", "refs": ["d1"] }
     ],
+    "playbook": [
+      {
+        "title": "【示例】通胀超预期、宽松预期后移",
+        "direction": "risk-off",
+        "actions": ["【示例】缩短债券久期", "【示例】从高估值成长资产转向现金流近、定价权强、高股息的资产", "【示例】提高短久期现金类资产比例"],
+        "flows": { "from": ["长久期国债", "高估值成长"], "to": ["短端现金类", "价值与高股息"] },
+        "contrarian": "【示例】通胀见顶证据出现时（PPI 环比转负、核心通胀连续放缓），此前被抛售最多的长久期资产对利率下行最敏感，历史上往往最先修复；缩久期变得拥挤时，长端利率的上行空间也在收窄。",
+        "watch": ["【示例】利率期货隐含的降息次数", "【示例】基金经理调查中的最拥挤交易"],
+        "refs": ["n2"]
+      },
+      {
+        "title": "【示例】地缘事件与避险需求",
+        "direction": "risk-off",
+        "actions": ["【示例】增持黄金、美元等传统避险资产", "【示例】买入短期国债", "【示例】用期权买入下行保护"],
+        "flows": { "from": ["风险资产"], "to": ["黄金", "美元", "短期国债"] },
+        "contrarian": "【示例】避险资产的急涨里含有事件溢价。历史上多数地缘冲击对主要股指的影响较为短暂，除非冲击改变了能源供给或货币政策路径；事件缓和时，溢价往往回吐。",
+        "caveat": "【示例】若冲突影响到能源运输通道，上述规律可能不成立。",
+        "watch": ["【示例】原油期货期限结构", "【示例】VIX 及其期限结构"]
+      }
+    ],
     "strategies": [
       { "condition": "【示例】重大数据与会议密集期", "approach": "【示例】关注组合整体杠杆与单一资产集中度，预留流动性以应对价格跳空。" },
       { "condition": "【示例】汇率波动加大", "approach": "【示例】梳理外币资产与负债的汇率敞口，了解可用对冲方式及其成本。" }
@@ -464,6 +562,11 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
     "watchlist": [
       { "date": "2026-01-14", "region": "美国", "event": "【示例】12 月 CPI 发布", "why": "【示例】检验通胀回落趋势" },
       { "date": "2026-01-16", "region": "中国", "event": "【示例】四季度 GDP 发布", "why": "【示例】全年增长目标完成情况" }
+    ],
+    "takeaways": [
+      { "title": "【示例】看数据先看预期差", "text": "【示例】市场按“意外”定价，不按“水平”定价 [[n2]]。下次数据发布前，先记下一致预期，再看结果。" },
+      { "title": "【示例】分清必然传导与行为反应", "text": "【示例】利率调整后贷款重定价是合约决定的 [[n3]]，资金是否流出某类资产则取决于参与者行为。前者可以提前算，后者只能观察。" },
+      { "title": "【示例】防御拥挤本身是信息", "text": "【示例】当避险资产成为最拥挤的交易时，事件缓和带来的溢价回吐风险也在累积。" }
     ]
   },
   "method": {
@@ -503,8 +606,14 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
     'neutral': { label: '中性', icon: '→', color: 'var(--dir-neutral)' }
   };
   var LEVEL = { '高': 'var(--st-critical)', '中': 'var(--st-serious)', '低': 'var(--st-low)' };
+  var LAYERS = [
+    { key: 'first', cls: 'l1', name: '第一层 · 表象', hint: '发生了什么，直觉怎么看' },
+    { key: 'second', cls: 'l2', name: '第二层 · 机制', hint: '为什么会这样' },
+    { key: 'third', cls: 'l3', name: '第三层 · 推演', hint: '然后呢，谁会被迫调整' }
+  ];
+  var CERT = { '必然': 'must', '大概率': 'likely', '有条件': 'cond' };
   var WEEK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-  var DEFAULT_DISCLAIMER = '本报告依据公开信息整理，新闻摘要力求客观转述，市场分析仅用于描述市场环境与潜在风险，不构成任何投资建议或收益承诺。市场有风险，决策请结合自身情况独立判断，必要时咨询持牌专业人士。';
+  var DEFAULT_DISCLAIMER = '本报告依据公开信息整理，新闻摘要力求客观转述；市场分析用于讲解市场环境、传导机制与潜在风险，其中对防御策略与反向视角的描述是对市场通行做法与历史规律的讲解，不构成对任何资产的买卖建议或收益承诺。市场有风险，决策请结合自身情况独立判断，必要时咨询持牌专业人士。';
 
   var app = document.getElementById('app');
   var D;
@@ -855,7 +964,7 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
   var A = D.analysis;
   if (A) {
     var s5 = section('sec-analysis', '市场分析', { cls: 'analysis', tag: '分析解读' });
-    s5.appendChild(h('div', { class: 'notice', text: '以下内容是基于上方公开信息的环境分析，用于帮助理解当前市场所处的状态与风险，不构成投资建议。每条判断附有依据与反向证据，置信度为定性评估。' }));
+    s5.appendChild(h('div', { class: 'notice', text: '以下内容基于上方公开信息，讲解当前市场所处的环境、背后的传导机制与市场原理，以及市场通常如何应对，不构成投资建议。每条判断附有依据与反向证据；传导影响标注确定性等级，置信度为定性评估。' }));
 
     if (has(A.overview) || has(A.state)) {
       sub(s5, 'sec-a-overview', '市场环境总览');
@@ -869,11 +978,61 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
       if (has(A.overview)) s5.appendChild(h('div', { class: 'overview' }, paras(A.overview)));
     }
 
-    if (has(A.cycles)) {
+    if (has(A.causalChains)) {
+      sub(s5, 'sec-a-causal', '因果链拆解');
+      s5.appendChild(h('p', { class: 'block-intro', text: '用三层思维拆解本期最关键的市场现象：第一层看表象，第二层找机制，第三层推演“然后呢”。传导链中实线节点为本期已观察到的事实，虚线为推断。' }));
+      arr(A.causalChains).forEach(function (c) {
+        var nodes = arr(c.chain);
+        var flow = nodes.length ? h('div', { class: 'flow' }, nodes.map(function (n, i) {
+          var x = typeof n === 'string' ? { node: n } : n;
+          var inferred = x.status === 'inferred';
+          return [i ? h('span', { class: 'arrow', 'aria-hidden': 'true', text: '→' }) : null,
+            h('span', { class: 'node' + (inferred ? ' inferred' : ''), title: inferred ? '推断' : '已观察到' }, rich(x.node), refs(x.refs))];
+        })) : null;
+        var layers = LAYERS.filter(function (L) { return c[L.key]; }).map(function (L) {
+          return h('div', { class: 'layer ' + L.cls },
+            h('div', { class: 'layer-tag' }, L.name, h('span', { text: L.hint })), h('p', null, rich(c[L.key])));
+        });
+        var pr = typeof c.principle === 'string' ? { text: c.principle } : c.principle;
+        var kv = h('dl', { class: 'kv' });
+        if (c.counterEvidence) append(kv, [h('dt', { text: '反向证据' }), h('dd', null, rich(c.counterEvidence))]);
+        if (has(c.refs)) append(kv, [h('dt', { text: '相关条目' }), h('dd', null, refs(c.refs))]);
+        s5.appendChild(h('article', { class: 'card chain-card' },
+          h('h4', { text: c.title }),
+          c.phenomenon ? h('p', { class: 'phenomenon' }, h('strong', { text: '现象　' }), rich(c.phenomenon)) : null,
+          flow,
+          layers.length ? h('div', { class: 'layers' }, layers) : null,
+          pr ? h('div', { class: 'principle' }, h('span', { class: 'p-name', text: '市场原理' + (pr.name ? '｜' + pr.name : '') }), rich(pr.text || '')) : null,
+          kv.childNodes.length ? kv : null,
+          c.question ? h('div', { class: 'question' }, h('span', { class: 'q-label', text: '思考题' }), rich(c.question)) : null));
+      });
+    }
+
+    if (has(A.impacts)) {
+      sub(s5, 'sec-a-impacts', '传导与必然影响');
+      s5.appendChild(h('p', { class: 'block-intro', text: '本期哪些变化躲不开。必然：由合约、会计、数学关系或已生效的制度决定，不确定的只是幅度与时点；大概率：历史规律稳定，但依赖参与者行为；有条件：取决于尚未确定的变量。' }));
+      s5.appendChild(h('div', { class: 'table-wrap' }, h('table', null,
+        h('thead', null, h('tr', null, ['触发', '将导致', '传导机制 / 条件', '确定性', '显现时间'].map(function (t) { return h('th', { text: t }); }))),
+        h('tbody', null, arr(A.impacts).map(function (m) {
+          return h('tr', null,
+            h('td', { style: 'min-width:160px' }, rich(m.trigger || ''), refs(m.refs)),
+            h('td', { style: 'min-width:160px' }, rich(m.effect || '')),
+            h('td', { style: 'min-width:200px' },
+              m.mechanism ? rich(m.mechanism) : null,
+              m.condition ? h('div', { class: 'cond-line' }, '条件：', rich(m.condition)) : null),
+            h('td', null, m.certainty ? h('span', { class: 'cert ' + (CERT[m.certainty] || 'cond'), text: m.certainty }) : '—'),
+            h('td', { class: 'muted', style: 'white-space:nowrap', text: m.horizon || '—' }));
+        })))));
+    }
+
+    if (has(A.cycles) || has(A.cycleNotes)) {
       sub(s5, 'sec-a-cycles', '周期定位');
+      if (has(A.cycleNotes)) s5.appendChild(h('div', { class: 'overview' }, paras(A.cycleNotes)));
       var cyc = arr(A.cycles);
-      s5.appendChild(h('div', { class: 'table-wrap' }, h('table', { class: 'cycles' },
-        h('thead', null, h('tr', null, ['经济体', '增长', '通胀', '货币政策', '财政政策', '周期判断', '主要依据', '置信度'].map(function (t) { return h('th', { text: t }); }))),
+      var hasNext = cyc.some(function (c) { return c.next; });
+      var cycHead = ['经济体', '增长', '通胀', '货币政策', '财政政策', '周期判断', '主要依据'].concat(hasNext ? ['切换信号'] : [], ['置信度']);
+      if (cyc.length) s5.appendChild(h('div', { class: 'table-wrap' }, h('table', { class: 'cycles' },
+        h('thead', null, h('tr', null, cycHead.map(function (t) { return h('th', { text: t }); }))),
         h('tbody', null, cyc.map(function (c) {
           return h('tr', null,
             h('td', null, h('strong', { text: c.economy })),
@@ -881,6 +1040,7 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
             h('td', { text: c.monetary || '—' }), h('td', { text: c.fiscal || '—' }),
             h('td', { text: c.phase || '—' }),
             h('td', { style: 'min-width:220px' }, rich(c.evidence || '—'), refs(c.refs)),
+            hasNext ? h('td', { style: 'min-width:180px' }, rich(c.next || '—')) : null,
             h('td', null, level(c.confidence)));
         })))));
     }
@@ -919,8 +1079,8 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
       })));
     }
 
-    if (has(A.risks) || has(A.strategies)) {
-      sub(s5, 'sec-a-risks', '风险提示与规避思路');
+    if (has(A.risks) || has(A.playbook) || has(A.strategies)) {
+      sub(s5, 'sec-a-risks', '风险提示与防御策略');
       if (has(A.risks)) {
         s5.appendChild(h('div', { class: 'table-wrap' }, h('table', null,
           h('thead', null, h('tr', null, h('th', { text: '风险' }), h('th', { text: '发生可能性' }), h('th', { text: '潜在影响' }), h('th', { text: '说明' }))),
@@ -929,8 +1089,31 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
               h('td', null, rich(r.description || ''), refs(r.refs)));
           })))));
       }
+      if (has(A.playbook)) {
+        s5.appendChild(h('p', { class: 'block-intro', style: 'margin-top:18px', text: '市场情绪变化时，机构投资者通常有一套成熟的防御动作。读懂这套动作，可以解释价格、预判资金流向；防御一旦拥挤，反过来看同样包含信息。' }));
+        s5.appendChild(h('div', { class: 'notice', text: '反向视角不等于反着做：有效的反向信号通常需要情绪或持仓到达极值、基本面出现边际变化、价格对坏消息不再下跌三者同时出现，而情绪极值可以维持很久。以下是对市场通行做法与历史规律的描述，不构成对任何资产的买卖建议。' }));
+        s5.appendChild(h('div', { class: 'grid-2' }, arr(A.playbook).map(function (p) {
+          var dir = DIRECTION[p.direction];
+          var flows = null;
+          if (p.flows && typeof p.flows === 'object') {
+            var side = function (list, cls) { return h('div', { class: 'side ' + cls }, arr(list).map(function (x) { return h('span', { class: 'chip', text: x }); })); };
+            flows = h('div', { class: 'flowmap' }, side(p.flows.from, 'from'), h('span', { class: 'arrow', 'aria-label': '流向', text: '→' }), side(p.flows.to, 'to'));
+          } else if (p.flows) {
+            flows = h('p', { style: 'font-size:14px;margin:0' }, rich(p.flows));
+          }
+          return h('div', { class: 'card playbook' },
+            dir ? h('div', { class: 'signal-head' }, h('span', { class: 'badge' }, h('span', { class: 'dot', style: 'background:' + dir.color }), dir.icon + ' ' + dir.label)) : null,
+            h('h4', { text: p.title }),
+            has(p.actions) ? [h('div', { class: 'pb-sub', text: '市场惯用的防御动作' }), h('ul', null, arr(p.actions).map(function (t) { return h('li', null, rich(t)); }))] : null,
+            flows ? [h('div', { class: 'pb-sub', text: '资金流向' }), flows] : null,
+            p.contrarian ? h('div', { class: 'contrarian' }, h('span', { class: 'c-label', text: '反向视角' }), rich(p.contrarian)) : null,
+            p.caveat ? h('p', { class: 'cond-line' }, '前提与边界：', rich(p.caveat)) : null,
+            has(p.watch) ? [h('div', { class: 'pb-sub', text: '拥挤度 / 极值观察' }), h('ul', null, arr(p.watch).map(function (t) { return h('li', null, rich(t)); }))] : null,
+            has(p.refs) ? h('div', { class: 'sources-line' }, h('span', { text: '相关条目' }), refs(p.refs)) : null);
+        })));
+      }
       if (has(A.strategies)) {
-        s5.appendChild(h('p', { class: 'block-intro', style: 'margin-top:18px', text: '以下为通用风险管理思路，仅针对上述环境特征，不涉及具体标的与仓位，是否适用取决于个人情况。' }));
+        s5.appendChild(h('p', { class: 'block-intro', style: 'margin-top:18px', text: '个人风险管理底线：以下为通用风险管理思路，仅针对上述环境特征，不涉及具体标的与仓位，是否适用取决于个人情况。' }));
         arr(A.strategies).forEach(function (x) {
           var t = typeof x === 'string' ? { approach: x } : x;
           s5.appendChild(h('div', { class: 'strategy' },
@@ -948,6 +1131,17 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
           return h('tr', null, h('td', { class: 'num', style: 'white-space:nowrap', text: w.date ? fmtDate(w.date, true) : '待定' }),
             h('td', { text: w.region || '' }), h('td', null, rich(w.event)), h('td', { class: 'muted' }, rich(w.why || '')));
         })))));
+    }
+
+    if (has(A.takeaways)) {
+      sub(s5, 'sec-a-takeaways', '投资者笔记');
+      s5.appendChild(h('p', { class: 'block-intro', text: '本期可以带走的规律与方法：下次遇到类似局面，可以按这些思路自己推演。' }));
+      s5.appendChild(h('ol', { class: 'lessons' }, arr(A.takeaways).map(function (x) {
+        var t = typeof x === 'string' ? { text: x } : x;
+        return h('li', null,
+          t.title ? h('div', { class: 'l-title', text: t.title }) : null,
+          h('div', { class: 'l-text' }, rich(t.text || ''), refs(t.refs)));
+      })));
     }
     main.appendChild(s5);
   }
@@ -995,7 +1189,7 @@ footer.page-foot { text-align: center; color: var(--ink-3); font-size: 12px; pad
     sections.forEach(function (s) { io.observe(s.el); });
   }
 
-  document.body.appendChild(h('footer', { class: 'page-foot', text: '由 market-news-brief 技能生成 · 报告模板 v1.0' + (meta.generatedAt ? ' · ' + meta.generatedAt : '') }));
+  document.body.appendChild(h('footer', { class: 'page-foot', text: '由 market-news-brief 技能生成 · 报告模板 v1.1' + (meta.generatedAt ? ' · ' + meta.generatedAt : '') }));
 
   /* 若通过 #item-xxx 打开，渲染后再定位一次 */
   if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }

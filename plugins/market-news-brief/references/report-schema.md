@@ -141,13 +141,43 @@ HTML 模板 `assets/report-template.html` 由一份 JSON 驱动。按本文件�
 
 ## analysis（市场分析）
 
+页面按下列顺序渲染各模块：环境总览 → 因果链拆解 → 传导与必然影响 → 周期定位 → 市场信号 → 情景推演 → 风险与防御策略 → 后续关注日程 → 投资者笔记。
+
 ```json
 {
   "overview": ["段落一，可用 [[us-fomc]] 引用", "段落二"],
   "state": [{ "label": "风险偏好", "value": "边际回落", "note": "依据：……", "refs": ["us-fomc"] }],
+  "causalChains": [{
+    "title": "为什么 CPI、PPI 同步上行，多国股指反而下跌？",
+    "phenomenon": "美国 CPI 高于预期 [[us-cpi]]，同期标普 500 下跌、10 年期美债收益率上行。",
+    "chain": [
+      { "node": "CPI 高于预期", "status": "observed", "refs": ["us-cpi"] },
+      { "node": "降息预期后移", "status": "observed", "refs": ["us-rates"] },
+      { "node": "无风险利率上行", "status": "observed" },
+      { "node": "估值压缩", "status": "inferred" }
+    ],
+    "first": "物价上涨，企业名义收入也涨，直觉上对股市不是坏事。",
+    "second": "传导链每一环的依据与背后的原理……",
+    "third": "谁会被迫调整、已定价程度、二阶效应、反转条件……",
+    "principle": { "name": "贴现率效应", "text": "资产价格约等于未来现金流折现……" },
+    "counterEvidence": "……",
+    "question": "如果下个月 PPI 回落、CPI 仍然偏高，这条链上哪一环会先松动？",
+    "refs": ["us-cpi"]
+  }],
+  "impacts": [{
+    "trigger": "某类进口商品加征关税生效 [[us-tariff]]",
+    "effect": "进口商报关时缴纳关税，进口成本上升",
+    "mechanism": "关税在报关环节征收",
+    "certainty": "必然", "horizon": "即时", "refs": ["us-tariff"]
+  }, {
+    "trigger": "同上", "effect": "部分成本转嫁至终端零售价格",
+    "certainty": "有条件", "condition": "取决于汇率吸收程度、进口商利润率与替代来源", "horizon": "1–2 个季度"
+  }],
+  "cycleNotes": ["一两段周期叙事：所处阶段、与典型情形的差异、切换信号出现了几个"],
   "cycles": [{
     "economy": "美国", "growth": "放缓", "inflation": "回落", "monetary": "宽松周期", "fiscal": "扩张",
-    "phase": "增长放缓、通胀回落", "evidence": "非农低于预期 [[us-nfp]]", "refs": [], "confidence": "中"
+    "phase": "增长放缓、通胀回落", "evidence": "非农低于预期 [[us-nfp]]", "refs": [],
+    "next": "收益率曲线牛陡、PMI 新订单回升", "confidence": "中"
   }],
   "signals": [{
     "title": "美联储前瞻指引措辞变化", "category": "政策信号",
@@ -159,18 +189,40 @@ HTML 模板 `assets/report-template.html` 由一份 JSON 驱动。按本文件�
     "triggers": ["……"], "watch": ["……"]
   }],
   "risks": [{ "risk": "……", "probability": "中", "impact": "高", "description": "……", "refs": ["us-fomc"] }],
+  "playbook": [{
+    "title": "通胀超预期、加息预期升温",
+    "direction": "risk-off",
+    "actions": ["缩短债券久期", "从高估值成长资产转向现金流近、定价权强的资产"],
+    "flows": { "from": ["长久期国债", "高估值成长"], "to": ["短端现金类", "价值与高股息"] },
+    "contrarian": "通胀见顶证据出现时，此前被抛售最多的长久期资产对利率下行最敏感……",
+    "watch": ["利率期货隐含的降息次数", "基金经理调查中的最拥挤交易"],
+    "refs": ["us-cpi"]
+  }],
   "strategies": [{ "condition": "适用的环境特征", "approach": "风险管理思路" }],
-  "watchlist": [{ "date": "2026-10-15", "region": "美国", "event": "9 月 CPI 发布", "why": "检验通胀回落趋势" }]
+  "watchlist": [{ "date": "2026-10-15", "region": "美国", "event": "9 月 CPI 发布", "why": "检验通胀回落趋势" }],
+  "takeaways": [{ "title": "看数据先看预期差", "text": "本期例证 [[us-cpi]] + 下次怎么用", "refs": [] }]
 }
 ```
 
 | 字段 | 取值约束 |
 |------|---------|
+| `causalChains[].chain[].status` | `observed`（本期已观察到）/ `inferred`（推断）；实线、虚线区分显示 |
+| `causalChains[].first` / `second` / `third` | 三层思维，三者都要写，模板会自动加层级标签，正文不必重复“第一层”等字样 |
+| `causalChains[].principle` | 对象 `{ name, text }`，或直接写字符串 |
+| `impacts[].certainty` | `必然` / `大概率` / `有条件`；`必然` 须写 `mechanism`，`有条件` 须写 `condition` |
+| `impacts[].horizon` | 粗粒度时点，如“即时”“数周”“1–2 个季度”“更长” |
+| `cycles[].next` | 切换信号：离下一阶段还差哪些信号；有任意一行填写时表格增加该列 |
+| `playbook[].direction` | 同 `signals[].direction`，指这种情绪本身的方向 |
+| `playbook[].flows` | 对象 `{ from: [], to: [] }` 渲染为资金流向图；也可直接写字符串 |
+| `playbook[].caveat` | 可选，本卡片额外的前提与边界；通用的“反向不等于反着做”提示模板已内置 |
+| `takeaways[]` | 对象 `{ title, text, refs }`，或直接写字符串；3–5 条 |
 | `signals[].direction` | `risk-on` / `risk-off` / `mixed` / `neutral` |
 | `signals[].strength` | 1–3 |
 | `confidence`、`probability`、`impact` | `高` / `中` / `低` |
 | `scenarios[].likelihood` | 定性词，如“相对较高”“中等”“较低” |
 | `watchlist[].date` | 日期；日期未定时省略，显示为“待定” |
+
+`causalChains`、`impacts`、`playbook`、`takeaways` 的写法见 `market-mechanics.md` 与 `writing-rules.md`。
 
 ## method（方法说明）
 

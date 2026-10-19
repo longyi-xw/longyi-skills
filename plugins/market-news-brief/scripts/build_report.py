@@ -39,6 +39,8 @@ VERIFICATION = {"official", "multi", "single"}
 SOURCE_TYPES = {"official", "wire", "media", "data", "research", "other"}
 DIRECTIONS = {"risk-on", "risk-off", "neutral", "mixed"}
 LEVELS = {"高", "中", "低"}
+CERTAINTY = {"必然", "大概率", "有条件"}
+NODE_STATUS = {"observed", "inferred"}
 
 # 新闻区（事实陈述）不应出现的情绪化 / 评价性 / 推断性措辞。命中只告警，由撰写者判断是否属于引语。
 NEWS_SUBJECTIVE = [
@@ -55,6 +57,8 @@ ANALYSIS_ADVICE = [
     "加仓", "减仓", "满仓", "清仓", "重仓", "轻仓", "抄底", "逃顶", "追高", "梭哈", "all in",
     "止盈", "必涨", "必跌", "稳赚", "保本", "翻倍", "躺赚", "闭眼买", "上车", "下车",
     "仓位配置为", "配置比例",
+    # 对读者下指令的句式：分析区只用第三人称描述市场行为
+    "你应该", "建议你", "建议投资者", "投资者应该", "应该买", "应该卖", "现在可以买", "布局时机", "赶紧",
 ]
 
 
@@ -96,7 +100,7 @@ def walk_text(node, path: str):
             yield from walk_text(v, f"{path}[{i}]")
     elif isinstance(node, dict):
         for k, v in node.items():
-            if k in {"id", "url", "sources", "refs", "date", "type", "verification", "direction"}:
+            if k in {"id", "url", "sources", "refs", "date", "type", "verification", "direction", "status", "certainty"}:
                 continue
             yield from walk_text(v, f"{path}.{k}")
 
@@ -254,6 +258,62 @@ def validate(d: dict, rep: Report) -> None:
         if w.get("date"):
             parse_day(w["date"], f"analysis.watchlist[{i}].date", rep)
 
+    def cites(node) -> bool:
+        """节点内是否有任何非空 refs 列表或 [[id]] 引用。"""
+        if isinstance(node, dict):
+            return bool(as_list(node.get("refs"))) or any(cites(v) for k, v in node.items() if k != "refs")
+        if isinstance(node, list):
+            return any(cites(v) for v in node)
+        return isinstance(node, str) and bool(REF_RE.search(node))
+
+    for i, c in enumerate(as_list(a.get("causalChains"))):
+        where = f"analysis.causalChains[{i}]（{c.get('title')}）"
+        if not c.get("title"):
+            rep.err(f"analysis.causalChains[{i}]：缺少 title")
+        missing = [name for key, name in (("first", "第一层"), ("second", "第二层"), ("third", "第三层")) if not c.get(key)]
+        if missing:
+            rep.warn(f"{where}：三层思维不完整，缺少{'、'.join(missing)}")
+        for j, n in enumerate(as_list(c.get("chain"))):
+            if not isinstance(n, dict) or not n.get("node"):
+                rep.err(f"{where}.chain[{j}]：须为含 node 的对象")
+            elif n.get("status") and n["status"] not in NODE_STATUS:
+                rep.err(f"{where}.chain[{j}]：status 须为 {sorted(NODE_STATUS)} 之一")
+        if not c.get("principle"):
+            rep.warn(f"{where}：没有点名背后的市场原理")
+        if not c.get("counterEvidence"):
+            rep.warn(f"{where}：缺少 counterEvidence")
+        if not c.get("question"):
+            rep.warn(f"{where}：缺少 question（留给读者的思考题）")
+        if not cites(c):
+            rep.warn(f"{where}：没有关联任何新闻条目，因果链无法回溯")
+
+    for i, m in enumerate(as_list(a.get("impacts"))):
+        where = f"analysis.impacts[{i}]"
+        for key in ("trigger", "effect"):
+            if not m.get(key):
+                rep.err(f"{where}：缺少 {key}")
+        cert = m.get("certainty")
+        if cert not in CERTAINTY:
+            rep.err(f"{where}：certainty 须为 必然/大概率/有条件，实际为 {cert!r}")
+        elif cert == "必然" and not m.get("mechanism"):
+            rep.warn(f"{where}：标为“必然”但没有写 mechanism——必然只适用于合约、会计、数学或制度机制决定的传导")
+        elif cert == "有条件" and not m.get("condition"):
+            rep.warn(f"{where}：标为“有条件”但没有写 condition")
+
+    for i, p in enumerate(as_list(a.get("playbook"))):
+        where = f"analysis.playbook[{i}]（{p.get('title')}）"
+        if not p.get("title"):
+            rep.err(f"analysis.playbook[{i}]：缺少 title")
+        if p.get("direction") and p["direction"] not in DIRECTIONS:
+            rep.err(f"{where}：direction 须为 {sorted(DIRECTIONS)} 之一")
+        if not as_list(p.get("actions")):
+            rep.warn(f"{where}：缺少 actions（市场惯用的防御动作）")
+        if not p.get("contrarian"):
+            rep.warn(f"{where}：缺少 contrarian（反向视角）")
+        flows = p.get("flows")
+        if isinstance(flows, dict) and not (as_list(flows.get("from")) and as_list(flows.get("to"))):
+            rep.warn(f"{where}：flows 须同时有 from 与 to")
+
     # ---------- 交叉引用 ----------
     def check_refs(node, path: str) -> None:
         for p, text in walk_text(node, path):
@@ -289,6 +349,15 @@ def validate(d: dict, rep: Report) -> None:
 
     if not a:
         rep.warn("缺少 analysis：报告将只有新闻部分")
+    else:
+        for key, why in (
+            ("causalChains", "没有因果拆解（三层思维），分析容易停在描述层"),
+            ("impacts", "没有说明哪些传导躲不开"),
+            ("playbook", "没有梳理当前情绪下的防御策略与反向视角"),
+            ("takeaways", "没有投资者笔记（可迁移的规律）"),
+        ):
+            if not as_list(a.get(key)):
+                rep.warn(f"缺少 analysis.{key}：{why}")
     if not as_list(d.get("highlights")):
         rep.warn("缺少 highlights：报告开头没有核心要点")
 
