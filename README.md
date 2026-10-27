@@ -13,6 +13,7 @@ Longyi 的个人 Claude Code 技能市场（marketplace）。把仓库推到 Git
 | `project-retrospective` | 把做完的项目反向蒸馏成个人知识资产与简历素材：提炼架构决策、技术原理与实现难点，按「事实→机制→决策→可迁移经验」四层阶梯抽象，用代码与 git 证据核验每条主张，产出知识复盘 / 机读 experience.yml / STAR 简历条目 / 面试问答四件套，并可跨项目汇总成技术画像与简历初稿。 |
 | `claude-anti-ban` | Claude Code 账号防封禁与网络隐私加固：禁用后台 Datadog/GrowthBook/OTEL 遥测上报、系统时区对齐节点 IP、检测并修复 DNS/IPv6 泄漏、清洗境内镜像配置痕迹，提供三维立体加固工作流与一键自动化脚本。 |
 | `market-news-brief` | 全球经济新闻总结 + 市场分析：按指定时间窗口（默认近 7 天，可指定一天 / 一个月 / 任意日期）联网检索中美俄欧日等主要经济体的市场新闻、政策变动、发展方向与重大自然灾害，产出客观中立的新闻摘要；再以市场分析经理的视角用三层思维拆解因果链（如通胀上行为何股指反而下跌）、讲清市场原理与周期位置、分析必然 / 大概率的传导影响、梳理情绪驱动下的防御策略及其反向视角，不含个股推荐与买卖建议，渲染为统一的 HTML 报告。 |
+| `prompt-architect` | 智能提示词架构师与合规可用性优化器（v1.2.0）：采用大脑与本机挂载记忆库解耦架构，通过难度分级追问与靶向文件锚定，将简短需求、软件开发、系统移植、生活规划或存量提示词转化为高精确度、省 Token 且对下游执行 Agent 高可用、不误触安全识别机制的结构化提示词，坚持「功能零阉割、表达工程化」原则。 |
 
 ## 一、首次发布（只需做一次）
 
@@ -45,6 +46,7 @@ git push -u origin main
 /plugin install project-retrospective@longyi-skills
 /plugin install claude-anti-ban@longyi-skills
 /plugin install market-news-brief@longyi-skills
+/plugin install prompt-architect@longyi-skills
 ```
 
 安装时会让你选 **scope**：
@@ -54,7 +56,7 @@ git push -u origin main
 
 两者都是通用工具，建议选 User scope。
 
-安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」即可触发 `project-onboarding`；丢一份需求/PRD 文档并说「帮我分析一下这份需求」即可触发 `requirement-analysis`；丢一段读书 / 学习笔记并说「帮我校对 / 总结一下」即可触发 `study-notes`；说「帮我装个 xxx」「新电脑配一下环境」「这个命令怎么找不到」即可触发 `dev-env-conventions`；说「帮我总结下这周的财经新闻」「最近一个月全球市场局势怎么样」即可触发 `market-news-brief`；也可显式点名让它用某个技能。
+安装后当前会话即可使用，无需重启。在任意陌生项目目录里说「帮我梳理下这个项目」即可触发 `project-onboarding`；丢一份需求/PRD 文档并说「帮我分析一下这份需求」即可触发 `requirement-analysis`；丢一段读书 / 学习笔记并说「帮我校对 / 总结一下」即可触发 `study-notes`；说「帮我装个 xxx」「新电脑配一下环境」「这个命令怎么找不到」即可触发 `dev-env-conventions`；说「帮我总结下这周的财经新闻」「最近一个月全球市场局势怎么样」即可触发 `market-news-brief`；说「生成提示词」「优化这份提示词」「做一下提示词合规优化」即可触发 `prompt-architect`；也可显式点名让它用某个技能。
 
 ## 三、更新技能
 
@@ -73,6 +75,7 @@ git add . && git commit -m "update: xxx" && git push
 /plugin install study-notes@longyi-skills
 /plugin install dev-env-conventions@longyi-skills
 /plugin install market-news-brief@longyi-skills
+/plugin install prompt-architect@longyi-skills
 ```
 
 ## 四、以后添加新技能
@@ -140,19 +143,33 @@ longyi-skills/
 │   │   └── references/            # 深度参考文档
 │   │       ├── risk-vectors.md        # 五大风控维度深度剖析
 │   │       └── proxy-and-dns-rules.md # 代理分流与 DNS 防泄漏配置手册
-│   └── market-news-brief/
+│   ├── market-news-brief/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json        # 插件清单
+│   │   ├── SKILL.md               # 技能主体：时间窗口 → 检索核实 → 新闻总结 → 市场分析 → HTML 报告
+│   │   ├── assets/
+│   │   │   └── report-template.html   # 数据驱动的通用 HTML 报告模板（深浅色、筛选、引用跳转、打印）
+│   │   ├── scripts/
+│   │   │   └── build_report.py        # 校验报告 JSON（日期/引用/措辞）并注入模板
+│   │   └── references/            # 按需加载
+│   │       ├── search-playbook.md     # 各经济体权威来源、检索模板、日期核实
+│   │       ├── writing-rules.md       # 中立措辞规范、分析区边界与正反例
+│   │       ├── analysis-framework.md  # 分析结构、指标解读、周期定位与切换、信号提取
+│   │       ├── market-mechanics.md    # 三层思维、市场原理库、传导确定性、防御策略与反向视角
+│   │       └── report-schema.md       # 报告数据 JSON 字段规范
+│   └── prompt-architect/
 │       ├── .claude-plugin/
-│       │   └── plugin.json        # 插件清单
-│       ├── SKILL.md               # 技能主体：时间窗口 → 检索核实 → 新闻总结 → 市场分析 → HTML 报告
-│       ├── assets/
-│       │   └── report-template.html   # 数据驱动的通用 HTML 报告模板（深浅色、筛选、引用跳转、打印）
-│       ├── scripts/
-│       │   └── build_report.py        # 校验报告 JSON（日期/引用/措辞）并注入模板
-│       └── references/            # 按需加载
-│           ├── search-playbook.md     # 各经济体权威来源、检索模板、日期核实
-│           ├── writing-rules.md       # 中立措辞规范、分析区边界与正反例
-│           ├── analysis-framework.md  # 分析结构、指标解读、周期定位与切换、信号提取
-│           ├── market-mechanics.md    # 三层思维、市场原理库、传导确定性、防御策略与反向视角
-│           └── report-schema.md       # 报告数据 JSON 字段规范
+│       │   └── plugin.json        # 插件清单（v1.2.0）
+│       ├── SKILL.md               # 技能主体：脑体解耦记忆挂载 + 难度分级追问 + 合规保真双检
+│       ├── domains/               # 领域专属追问维度与提示词模板
+│       │   ├── software-dev.md
+│       │   ├── system-arch.md
+│       │   └── travel-life.md
+│       ├── presets/               # 可复用工程习惯与生活偏好开关
+│       │   ├── dev-habits.md
+│       │   └── life-preferences.md
+│       └── references/            # 按需加载协议规范
+│           ├── memory-protocol.md             # 宿主机记忆库挂载与「四记四不记」协议
+│           └── compliance-and-usability.md    # 去敏不阉割：合规可用性与功能保真协议
 └── README.md
 ```

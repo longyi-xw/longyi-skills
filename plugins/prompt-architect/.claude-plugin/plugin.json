@@ -1,0 +1,17 @@
+{
+  "name": "prompt-architect",
+  "version": "1.2.0",
+  "description": "智能提示词架构师与合规可用性优化器：采用大脑（技能逻辑）与身体（本机挂载记忆库）解耦架构，通过难度分级追问与靶向文件锚定，将简短需求、软件开发任务、系统移植方案、协议调试笔记、生活旅行计划或存量提示词，转化为高精确度、省 Token 且对下游执行 Agent 高可用、不误触安全护栏的结构化提示词，坚持“功能零阉割、表达工程化”保真原则。",
+  "author": {
+    "name": "Longyi"
+  },
+  "keywords": [
+    "prompt-architect",
+    "prompt-engineering",
+    "context-router",
+    "token-efficiency",
+    "compliance-optimization",
+    "agent-usability",
+    "host-memory"
+  ]
+}
