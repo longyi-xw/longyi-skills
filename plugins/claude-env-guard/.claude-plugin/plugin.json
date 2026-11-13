@@ -1,0 +1,21 @@
+{
+  "name": "claude-env-guard",
+  "version": "1.0.0",
+  "description": "跨平台（Windows / macOS / Linux）Claude 防风控环境隔离与一键守护工具（升级替代 claude-anti-ban）：自动解析 Clash 配置与 HTTP / Named Pipe 控制接口、锁定静态专用出口节点、覆盖 Core / Persona KYC / 支付 / Turnstile / Arkose / 遥测与 Fake-IP 分流规则、双探针校验 ipinfo 与 claude.ai 边缘实际出口、对齐系统时区、Chrome Profile 防泄漏加固、CLI OAuth 隔离浏览器接管，以及首次初始化安全清理账号/风控缓存并严格保留项目记忆。",
+  "author": {
+    "name": "Longyi"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anti-ban",
+    "env-guard",
+    "clash",
+    "mihomo",
+    "proxy",
+    "browser-isolation",
+    "oauth",
+    "privacy",
+    "timezone"
+  ]
+}

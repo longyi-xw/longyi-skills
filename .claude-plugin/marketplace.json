@@ -36,9 +36,9 @@
       "category": "development"
     },
     {
-      "name": "claude-anti-ban",
-      "source": "./plugins/claude-anti-ban",
-      "description": "Claude Code 账号防封禁与网络隐私加固：禁用后台 Datadog/GrowthBook/OTEL 遥测上报、系统时区对齐节点 IP、检测并修复 DNS/IPv6 泄漏、清洗境内镜像配置痕迹，提供三维立体加固与一键自动化脚本。",
+      "name": "claude-env-guard",
+      "source": "./plugins/claude-env-guard",
+      "description": "跨平台（Windows / macOS / Linux）Claude 防风控环境隔离与一键守护工具（替代原 claude-anti-ban）：自动探测 Clash 配置与 HTTP API / Named Pipe 接口，锁定静态专用出口节点并覆写 Core / Persona KYC / 支付 / Turnstile / Arkose / 遥测与 Fake-IP 分流规则，双探针校验 ipinfo 与 claude.ai 边缘实际出口、对齐系统时区、Chrome Profile 防泄漏加固、CLI OAuth 隔离浏览器接管，以及首次使用安全清理账号/风控缓存并严格保留项目记忆。",
       "category": "security"
     },
     {
